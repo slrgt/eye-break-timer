@@ -65,19 +65,27 @@ jobs:
           if (Test-Path -Path "dist") { Remove-Item -Path "dist" -Recurse -Force }
           if (Test-Path -Path "out") { Remove-Item -Path "out" -Recurse -Force }
           
+          # Verify electron-builder installation
+          echo "Verifying electron-builder installation..."
+          npx electron-builder --version
+          
+          # Set environment variables for Windows build
+          $env:DEBUG = "electron-builder"
+          $env:ELECTRON_BUILDER_VERBOSE = "true"
+          
           # Try building with electron-builder
           echo "Attempting to build with electron-builder..."
           $ErrorActionPreference = "Continue"
           
           try {
-            # First try the npm script
+            # First try the npm script with verbose output
             echo "Running npm run dist:win..."
-            npm run dist:win
+            npm run dist:win --verbose
             echo "dist:win completed successfully"
           } catch {
             echo "dist:win failed, trying direct electron-builder command..."
-            # Try direct electron-builder command as fallback
-            npx electron-builder --win --x64 --nsis --portable
+            # Try direct electron-builder command as fallback with verbose output
+            npx electron-builder --win --x64 --nsis --portable --verbose
           }
           
           # Check if build was successful
@@ -86,6 +94,13 @@ jobs:
             Get-ChildItem -Path "out" -Recurse
           } else {
             echo "Build output directory not found"
+            # Try to get more information about the failure
+            if (Test-Path -Path "node_modules\.bin\electron-builder.cmd") {
+              echo "electron-builder is installed"
+              Get-Content -Path "node_modules\.bin\electron-builder.cmd"
+            } else {
+              echo "electron-builder is not installed in node_modules\.bin"
+            }
             exit 1
           }
           
