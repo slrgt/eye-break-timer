@@ -52,32 +52,45 @@ jobs:
         run: |
           cat package.json
           
-      # Instead of 'build', use 'pack' which is defined in your package.json
-      - name: Build Electron app
-        run: |
-          npm run pack
-          
-      # For Windows, use simplified build command with verbose logging
-      - name: Package Windows app
+      # Windows-specific build steps
+      - name: Build Windows app
         if: matrix.os == 'windows-latest'
         run: |
-          echo "Starting Windows build..."
-          npm config list
+          echo "Starting Windows build process..."
+          echo "Current directory: $pwd"
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
           
-          # Try to use the npm script first
+          # Clean any previous builds
+          if (Test-Path -Path "dist") { Remove-Item -Path "dist" -Recurse -Force }
+          if (Test-Path -Path "out") { Remove-Item -Path "out" -Recurse -Force }
+          
+          # Try building with electron-builder
+          echo "Attempting to build with electron-builder..."
+          $ErrorActionPreference = "Continue"
+          
           try {
+            # First try the npm script
+            echo "Running npm run dist:win..."
             npm run dist:win
             echo "dist:win completed successfully"
           } catch {
             echo "dist:win failed, trying direct electron-builder command..."
             # Try direct electron-builder command as fallback
-            npx electron-builder --win --x64 --dir
+            npx electron-builder --win --x64 --nsis --portable
           }
           
-          echo "Windows build completed or handled errors."
+          # Check if build was successful
+          if (Test-Path -Path "out") {
+            echo "Build output directory exists"
+            Get-ChildItem -Path "out" -Recurse
+          } else {
+            echo "Build output directory not found"
+            exit 1
+          }
           
-      # For macOS, use dist:mac instead of make
-      - name: Package macOS app
+      # macOS-specific build steps
+      - name: Build macOS app
         if: matrix.os == 'macos-latest'
         run: |
           npm run dist:mac
