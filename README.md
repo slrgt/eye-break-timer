@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-# eye-break-timer
-=======
->>>>>>> 23f3c72 (Initial commit of Eye Break Timer app)
+
 # Eye Break Timer
 
 A simple app that reminds you to take eye breaks every 20 minutes to reduce eye strain and fatigue.
@@ -68,5 +63,5 @@ npm run dist:linux  # Linux
 ```
 
 ## License
-=======
+
 AGPL 
