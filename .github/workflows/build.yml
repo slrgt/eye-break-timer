@@ -27,49 +27,51 @@ jobs:
           node-version: 16
           
       - name: Install dependencies
-        working-directory: eye-break
         run: |
           npm ci
           
       - name: Build Electron app
-        working-directory: eye-break
         run: |
           npm run build
           
       # For Windows
       - name: Package Windows app
         if: matrix.os == 'windows-latest'
-        working-directory: eye-break
         run: |
           npm run make
           
       # For macOS
       - name: Package macOS app
         if: matrix.os == 'macos-latest'
-        working-directory: eye-break
         run: |
           npm run make
           
       - name: List build output files
-        working-directory: eye-break
         run: |
-          ls -R out/
+          ls -R out/ || echo "out/ directory not found"
+          ls -R dist/ || echo "dist/ directory not found"
         
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: eye-break-timer-${{ matrix.os }}
           path: |
-            eye-break/out/make/**/*.exe
-            eye-break/out/make/**/*.dmg
-            eye-break/out/make/**/*.zip
+            out/make/**/*.exe
+            out/make/**/*.dmg
+            out/make/**/*.zip
+            dist/**/*.exe
+            dist/**/*.dmg
+            dist/**/*.zip
             
       - name: Create Release
         uses: ncipollo/release-action@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           artifacts: |
-            eye-break/out/make/**/*.exe
-            eye-break/out/make/**/*.dmg
-            eye-break/out/make/**/*.zip
+            out/make/**/*.exe
+            out/make/**/*.dmg
+            out/make/**/*.zip
+            dist/**/*.exe
+            dist/**/*.dmg
+            dist/**/*.zip
           token: ${{ secrets.GITHUB_TOKEN }} 
