@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown</title>
+  <style>
+    /* Complete reset with forced transparency */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: rgba(0,0,0,0) !important;
+      -webkit-app-region: drag;
+    }
+    
+    /* CSS only solution - no nested elements */
+    .countdown-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      background-color: rgba(0,0,0,0) !important;
+    }
+    
+    /* Circle with a blend mode that works better on macOS */
+    .countdown-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background-color: rgb(10, 26, 42);
+      box-shadow: 0 0 15px 5px rgba(155, 227, 255, 0.2);
+      border: 2px solid rgba(155, 227, 255, 0.5);
+      mix-blend-mode: normal;
+    }
+    
+    /* Readable text */
+    .countdown-number {
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      text-shadow: 0 0 10px rgba(155, 227, 255, 0.5);
+    }
+    
+    /* Message below */
+    .countdown-message {
+      margin-top: 15px;
+      color: white;
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background-color: rgb(10, 26, 42);
+      padding: 4px 10px;
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="countdown-container">
+    <div class="countdown-circle">
+      <span class="countdown-number">5</span>
+    </div>
+    <div class="countdown-message">Break coming up</div>
+  </div>
+  
+  <script>
+    // Force transparency immediately
+    document.addEventListener('DOMContentLoaded', () => {
+      // Get display ID from process args
+      const displayIdArg = window.process?.argv?.find(arg => arg.startsWith('--display-id='));
+      const displayId = displayIdArg ? displayIdArg.split('=')[1] : null;
+      
+      console.log('Countdown loaded. Display ID:', displayId);
+      
+      // Apply special fixes for non-primary displays on macOS
+      if (window.process?.platform === 'darwin' && displayId && displayId !== '1') {
+        console.log('Applying external monitor fixes for display', displayId);
+        
+        // Create and inject CSS fix file specifically for external monitors
+        const linkElem = document.createElement('link');
+        linkElem.rel = 'stylesheet';
+        linkElem.href = 'countdown-fix.css';
+        document.head.appendChild(linkElem);
+        
+        // Apply special inline fixes for MacOS to force transparency
+        document.documentElement.style.backgroundColor = 'rgba(0,0,0,0)';
+        document.documentElement.style.opacity = '1';
+        document.body.style.backgroundColor = 'rgba(0,0,0,0)';
+        document.body.style.opacity = '1';
+        
+        // Remove backdrop filters
+        document.documentElement.style.webkitBackdropFilter = 'none';
+        document.body.style.webkitBackdropFilter = 'none';
+      } else {
+        // Standard transparency for primary display
+        document.documentElement.style.backgroundColor = 'rgba(0,0,0,0)';
+        document.body.style.backgroundColor = 'rgba(0,0,0,0)';
+      }
+    });
+    
+    // Update the countdown number
+    function updateCount(num) {
+      const countElement = document.querySelector('.countdown-number');
+      if (countElement) {
+        countElement.textContent = num;
+        
+        // Dynamic opacity based on count
+        const opacity = 0.4 + (1 - (num / 5)) * 0.6;
+        document.querySelector('.countdown-circle').style.opacity = opacity;
+      }
+    }
+  </script>
+</body>
+</html> 

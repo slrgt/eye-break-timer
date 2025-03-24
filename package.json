@@ -1,0 +1,51 @@
+{
+  "name": "eye-break-timer",
+  "productName": "Eye Break Timer",
+  "version": "1.0.0",
+  "description": "An app that reminds you to take eye breaks every 20 minutes",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mwl",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
+  },
+  "keywords": [
+    "eye",
+    "break",
+    "timer",
+    "health",
+    "productivity"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "canvas": "^3.1.0",
+    "electron": "^29.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.yourname.eyebreaktimer",
+    "productName": "Eye Break Timer",
+    "mac": {
+      "category": "public.app-category.healthcare-fitness",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Utility"
+    },
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    }
+  },
+  "dependencies": {
+    "canvas": "^3.1.0"
+  }
+}

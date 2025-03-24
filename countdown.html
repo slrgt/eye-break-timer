@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html style="background: transparent !important;">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown</title>
+  <style>
+    /* Base styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: transparent !important;
+      background: transparent !important;
+      -webkit-app-region: drag;
+    }
+    
+    /* Main container */
+    .container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent !important;
+      opacity: 0;
+      transition: opacity 0.3s ease-in;
+    }
+    
+    .container.loaded {
+      opacity: 1;
+    }
+    
+    /* Simple countdown circle */
+    .countdown-circle {
+      /* Use exact pixel dimensions */
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      /* Simplify the display model */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      /* Use consistent border */
+      border: 1px solid rgba(155, 227, 255, 0.7);
+      /* Position and spacing */
+      position: relative;
+      margin: 20px;
+      /* Ensure consistent rendering */
+      box-sizing: border-box;
+      /* Prevent text content from distorting the shape */
+      overflow: hidden;
+      /* Prevent any transformation or scaling */
+      transform: none;
+      /* Force hardware acceleration */
+      will-change: transform;
+      /* Ensure content doesn't push boundaries */
+      min-width: 50px;
+      min-height: 50px;
+      max-width: 50px;
+      max-height: 50px;
+    }
+    
+    /* Number styling */
+    .countdown-number {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      line-height: 1;
+      margin: 0;
+      padding: 0;
+      /* Prevent text from affecting container shape */
+      display: block;
+      text-align: center;
+    }
+    
+    /* Message styling */
+    .countdown-message {
+      margin-top: 14px;
+      color: white;
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 5px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(155, 227, 255, 0.3);
+    }
+    
+    /* ESC hint styling */
+    .esc-hint {
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      padding: 3px 8px;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    
+    .esc-hint:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="countdown-circle">
+      <span class="countdown-number">5</span>
+    </div>
+    <div class="countdown-message">Break coming up</div>
+    <div class="esc-hint">Press ESC to cancel</div>
+  </div>
+  
+  <script>
+    // Ensure transparency and fade in content when loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Force transparency and ensure no white background
+      document.documentElement.style.backgroundColor = 'transparent';
+      document.documentElement.style.background = 'transparent';
+      document.body.style.backgroundColor = 'transparent';
+      document.body.style.background = 'transparent';
+      
+      // Fade in content
+      setTimeout(() => {
+        document.getElementById('container').classList.add('loaded');
+      }, 10);
+    });
+    
+    // Update only the countdown number
+    function updateCount(num) {
+      const countElement = document.querySelector('.countdown-number');
+      
+      if (countElement) {
+        countElement.textContent = num;
+      }
+    }
+    
+    // Add key handler for ESC
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        console.log('ESC key pressed in countdown HTML');
+        // Try to close window via the API if available
+        if (window.electronAPI && window.electronAPI.close) {
+          window.electronAPI.close();
+        }
+      }
+    });
+  </script>
+</body>
+</html> 

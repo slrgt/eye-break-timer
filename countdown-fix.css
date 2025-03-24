@@ -1,0 +1,40 @@
+/* 
+ * Special CSS fixes for macOS transparency issues on external monitors
+ * This file is loaded dynamically when needed
+ */
+
+/* Force transparent backgrounds at the root level */
+:root {
+  --transparent-color: rgba(0,0,0,0) !important;
+}
+
+html {
+  background-color: var(--transparent-color) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body {
+  background-color: var(--transparent-color) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Special fix for transparent containers */
+.countdown-container {
+  background-color: var(--transparent-color) !important;
+  background-image: none !important;
+}
+
+/* Make sure circle has a solid background but everything else is transparent */
+.countdown-circle {
+  /* Use RGB instead of RGBA for the circle background */
+  background-color: rgb(10, 26, 42) !important;
+}
+
+.countdown-message {
+  /* Use RGB instead of RGBA for the message background */
+  background-color: rgb(10, 26, 42) !important;
+} 
