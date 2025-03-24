@@ -12,6 +12,7 @@ let countdownWindow;
 let breakTimer;
 let breakDurationTimer;
 let countdownTimer;
+let stayOnTop = false; // Add this line to track the stay-on-top state
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -24,20 +25,14 @@ function createMainWindow() {
     },
     title: 'Eye Break Timer',
     icon: path.join(__dirname, 'icon.png'),
-    resizable: true,
-    minWidth: 190,  // Half of original width
-    minHeight: 240, // Half of original height
-    maxWidth: 760,  // Double original width
-    maxHeight: 960, // Double original height
+    resizable: false,
     transparent: false,
     backgroundColor: '#0a1a2a', // Match app's theme color
     autoHideMenuBar: true,
     center: true,
-    show: false // Start hidden to prevent white flash
+    show: false, // Start hidden to prevent white flash
+    alwaysOnTop: stayOnTop // Add this line to set initial state
   });
-
-  // Set aspect ratio to maintain uniform scaling
-  mainWindow.setAspectRatio(380/480);
 
   mainWindow.loadFile('index.html');
   
@@ -688,6 +683,40 @@ function setupIPC() {
     
     // Show the break screen using the test version
     testShowBreakScreen();
+  });
+  
+  // Handle getting stay-on-top state
+  ipcMain.handle('get-stay-on-top', () => {
+    return stayOnTop;
+  });
+  
+  // Handle setting stay-on-top state
+  ipcMain.on('set-stay-on-top', (event, enabled) => {
+    console.log(`Setting stay-on-top to ${enabled}`);
+    stayOnTop = enabled;
+    
+    // Update main window's always-on-top state
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setAlwaysOnTop(enabled);
+    }
+    
+    // Update break window's always-on-top state if it exists
+    if (breakWindow) {
+      if (Array.isArray(breakWindow)) {
+        breakWindow.forEach(win => {
+          if (win && !win.isDestroyed()) {
+            win.setAlwaysOnTop(enabled);
+          }
+        });
+      } else if (!breakWindow.isDestroyed()) {
+        breakWindow.setAlwaysOnTop(enabled);
+      }
+    }
+    
+    // Update countdown window's always-on-top state if it exists
+    if (countdownWindow && !countdownWindow.isDestroyed()) {
+      countdownWindow.setAlwaysOnTop(enabled);
+    }
   });
 }
 

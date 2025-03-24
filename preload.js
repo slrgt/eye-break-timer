@@ -43,6 +43,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return ipcRenderer.invoke('get-break-interval');
   },
   
+  // Stay on top functionality
+  getStayOnTop: () => {
+    return ipcRenderer.invoke('get-stay-on-top');
+  },
+  
+  setStayOnTop: (enabled) => {
+    ipcRenderer.send('set-stay-on-top', enabled);
+  },
+  
   // Events
   onResetTimer: (callback) => {
     ipcRenderer.on('reset-timer', () => {
