@@ -68,10 +68,5 @@ npm run dist:linux  # Linux
 ```
 
 ## License
-
-<<<<<<< HEAD
-MIT 
 =======
 AGPL 
->>>>>>> cc131ce (Initial commit of Eye Break Timer app)
->>>>>>> 23f3c72 (Initial commit of Eye Break Timer app)
