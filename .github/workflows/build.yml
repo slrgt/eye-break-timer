@@ -74,6 +74,7 @@ jobs:
           $env:ELECTRON_BUILDER_VERBOSE = "true"
           $env:ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = "true"
           $env:ELECTRON_BUILDER_OFFLINE = "true"
+          $env:ELECTRON_BUILDER_CACHE = "$env:USERPROFILE\.electron-builder\cache"
           
           # Try building with electron-builder
           echo "Attempting to build with electron-builder..."
@@ -121,6 +122,12 @@ jobs:
             if (Test-Path -Path "$env:USERPROFILE\.electron-builder\logs") {
               echo "electron-builder logs:"
               Get-Content -Path "$env:USERPROFILE\.electron-builder\logs\*" -Tail 20
+            }
+            
+            # Show electron-builder cache if it exists
+            if (Test-Path -Path "$env:USERPROFILE\.electron-builder\cache") {
+              echo "electron-builder cache contents:"
+              Get-ChildItem -Path "$env:USERPROFILE\.electron-builder\cache" -Recurse
             }
             
             exit 1
