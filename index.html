@@ -13,6 +13,8 @@
     html, body {
       background-color: #0a1a2a;
       background: linear-gradient(135deg, #1a2a3a 0%, #0c1824 100%);
+      height: 100%;
+      width: 100%;
     }
     
     body {
@@ -21,47 +23,48 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       color: #ffffff;
       overflow: hidden;
+      padding: 2vh;
     }
     
     .container {
       text-align: center;
-      padding: 20px;
+      padding: 2vh;
       background-color: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 1vh;
+      box-shadow: 0 0.8vh 3.2vh rgba(0, 0, 0, 0.2);
+      border: 0.1vh solid rgba(255, 255, 255, 0.15);
       max-width: 90%;
-      width: 340px;
+      width: min(34vh, 90vw);
     }
     
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 2vh;
       font-weight: 600;
-      font-size: 24px;
+      font-size: 2.4vh;
       background: linear-gradient(to right, #9be3ff, #a989ee);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-shadow: 0 0.2vh 0.4vh rgba(0, 0, 0, 0.1);
     }
     
     /* Tab styles */
     .tabs {
       display: flex;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      margin-bottom: 20px;
+      border-bottom: 0.1vh solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 2vh;
     }
     
     .tab {
-      padding: 8px 20px;
+      padding: 0.8vh 2vh;
       cursor: pointer;
-      font-size: 14px;
-      border-radius: 8px 8px 0 0;
+      font-size: 1.4vh;
+      border-radius: 0.8vh 0.8vh 0 0;
       transition: all 0.3s ease;
       background-color: transparent;
       border: none;
@@ -73,7 +76,7 @@
     .tab.active {
       opacity: 1;
       background-color: rgba(255, 255, 255, 0.1);
-      border-bottom: 2px solid #9be3ff;
+      border-bottom: 0.2vh solid #9be3ff;
     }
     
     .tab-content {
@@ -87,23 +90,23 @@
     /* Timer tab styles */
     .timer-container {
       position: relative;
-      margin: 20px 0;
-      padding: 2px;
+      margin: 2vh 0;
+      padding: 0.2vh;
       border-radius: 50%;
       background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-      width: 150px;
-      height: 150px;
+      width: 15vh;
+      height: 15vh;
       margin-left: auto;
       margin-right: auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.2);
     }
     
     .timer-inner {
-      width: 136px;
-      height: 136px;
+      width: 13.6vh;
+      height: 13.6vh;
       border-radius: 50%;
       background-color: rgba(16, 32, 48, 0.8);
       display: flex;
@@ -114,71 +117,71 @@
     }
     
     .timer {
-      font-size: 22px;
+      font-size: 2.2vh;
       font-weight: 600;
       font-family: monospace;
       color: #ffffff;
-      text-shadow: 0 0 10px rgba(155, 227, 255, 0.5);
+      text-shadow: 0 0 1vh rgba(155, 227, 255, 0.5);
     }
     
     .status {
-      margin-top: 20px;
+      margin-top: 2vh;
       font-style: normal;
       color: #9be3ff;
       line-height: 1.5;
-      font-size: 14px;
+      font-size: 1.4vh;
       opacity: 0.9;
     }
     
     .key-hint {
-      margin-top: 15px;
+      margin-top: 1.5vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 1.2vh;
       color: rgba(255, 255, 255, 0.7);
     }
     
     .key {
       display: inline-block;
       background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      padding: 2px 6px;
-      margin: 0 5px;
+      border: 0.1vh solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.4vh;
+      padding: 0.2vh 0.6vh;
+      margin: 0 0.5vh;
       font-family: monospace;
-      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0.2vh 0 rgba(0, 0, 0, 0.1);
     }
     
     /* Settings tab styles */
     .settings-group {
-      margin-bottom: 20px;
+      margin-bottom: 2vh;
       text-align: left;
     }
     
     .settings-group h2 {
-      font-size: 16px;
-      margin-bottom: 10px;
+      font-size: 1.6vh;
+      margin-bottom: 1vh;
       color: #9be3ff;
     }
     
     .setting-item {
       display: flex;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 1.5vh;
     }
     
     .setting-label {
       flex: 1;
-      font-size: 14px;
+      font-size: 1.4vh;
     }
     
     .setting-input {
-      width: 70px;
-      padding: 6px;
+      width: 7vh;
+      padding: 0.6vh;
       background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
+      border: 0.1vh solid rgba(255, 255, 255, 0.2);
+      border-radius: 0.4vh;
       color: white;
       text-align: center;
       font-family: monospace;
@@ -186,26 +189,26 @@
     
     .test-buttons {
       display: flex;
-      gap: 10px;
+      gap: 1vh;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 2vh;
     }
     
     .btn {
-      padding: 8px 16px;
+      padding: 0.8vh 1.6vh;
       background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
       border: none;
-      border-radius: 6px;
+      border-radius: 0.6vh;
       color: white;
-      font-size: 14px;
+      font-size: 1.4vh;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0.2vh 0.5vh rgba(0, 0, 0, 0.2);
     }
     
     .btn:hover {
       background: linear-gradient(135deg, #5d7ec9 0%, #243b66 100%);
-      transform: translateY(-2px);
+      transform: translateY(-0.2vh);
     }
     
     .btn:active {
@@ -213,8 +216,8 @@
     }
     
     .footer {
-      margin-top: 20px;
-      font-size: 12px;
+      margin-top: 2vh;
+      font-size: 1.2vh;
       color: rgba(255, 255, 255, 0.5);
     }
     
