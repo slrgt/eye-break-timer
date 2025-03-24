@@ -72,6 +72,7 @@ jobs:
           # Set environment variables for Windows build
           $env:DEBUG = "electron-builder"
           $env:ELECTRON_BUILDER_VERBOSE = "true"
+          $env:ELECTRON_BUILDER_ALLOW_UNRESOLVED_DEPENDENCIES = "true"
           
           # Try building with electron-builder
           echo "Attempting to build with electron-builder..."
@@ -101,6 +102,20 @@ jobs:
             } else {
               echo "electron-builder is not installed in node_modules\.bin"
             }
+            
+            # Check for common build issues
+            if (Test-Path -Path "node_modules\canvas") {
+              echo "canvas module is installed"
+            } else {
+              echo "canvas module is missing"
+            }
+            
+            # Show npm error log if it exists
+            if (Test-Path -Path "$env:APPDATA\npm-cache\_logs") {
+              echo "NPM error logs:"
+              Get-Content -Path "$env:APPDATA\npm-cache\_logs\*" -Tail 20
+            }
+            
             exit 1
           }
           
