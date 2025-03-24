@@ -10,7 +10,9 @@
     "dist": "electron-builder -mwl",
     "dist:mac": "electron-builder --mac",
     "dist:win": "electron-builder --win",
-    "dist:linux": "electron-builder --linux"
+    "dist:linux": "electron-builder --linux",
+    "build": "electron-builder --dir",
+    "make": "electron-builder"
   },
   "keywords": [
     "eye",
@@ -24,25 +26,34 @@
   "devDependencies": {
     "canvas": "^3.1.0",
     "electron": "^29.0.0",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "appId": "com.yourname.eyebreaktimer",
     "productName": "Eye Break Timer",
     "mac": {
       "category": "public.app-category.healthcare-fitness",
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "win": {
-      "target": ["nsis", "portable"]
+      "target": [
+        "nsis",
+        "portable"
+      ]
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Utility"
     },
     "directories": {
       "buildResources": "build",
-      "output": "dist"
+      "output": "out"
     }
   },
   "dependencies": {
