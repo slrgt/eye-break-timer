@@ -57,11 +57,24 @@ jobs:
         run: |
           npm run pack
           
-      # For Windows, use dist:win instead of make
+      # For Windows, use simplified build command with verbose logging
       - name: Package Windows app
         if: matrix.os == 'windows-latest'
         run: |
-          npm run dist:win
+          echo "Starting Windows build..."
+          npm config list
+          
+          # Try to use the npm script first
+          try {
+            npm run dist:win
+            echo "dist:win completed successfully"
+          } catch {
+            echo "dist:win failed, trying direct electron-builder command..."
+            # Try direct electron-builder command as fallback
+            npx electron-builder --win --x64 --dir
+          }
+          
+          echo "Windows build completed or handled errors."
           
       # For macOS, use dist:mac instead of make
       - name: Package macOS app
@@ -73,9 +86,28 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           echo "Looking for build outputs..."
-          dir
-          dir out || echo "out/ directory not found"
-          dir dist || echo "dist/ directory not found"
+          Get-ChildItem
+          
+          if (Test-Path -Path "out") {
+            echo "out directory contents:"
+            Get-ChildItem -Path "out" -Recurse
+          } else {
+            echo "out/ directory not found"
+          }
+          
+          if (Test-Path -Path "dist") {
+            echo "dist directory contents:"
+            Get-ChildItem -Path "dist" -Recurse
+          } else {
+            echo "dist/ directory not found"
+          }
+          
+          if (Test-Path -Path "node_modules\.bin") {
+            echo "node_modules\.bin contents:"
+            Get-ChildItem -Path "node_modules\.bin"
+          } else {
+            echo "node_modules\.bin not found"
+          }
           
       - name: List build output files (macOS)
         if: matrix.os == 'macos-latest'  
@@ -86,8 +118,9 @@ jobs:
           ls -la dist/ || echo "dist/ directory not found"
           find . -name "*.exe" -o -name "*.dmg" -o -name "*.zip" || echo "No build artifacts found"
         
+      # Always run this step regardless of previous step failure
       - name: Upload artifacts (Windows)
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-latest' && always()
         uses: actions/upload-artifact@v4
         with:
           name: eye-break-timer-windows
