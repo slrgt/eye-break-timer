@@ -24,13 +24,20 @@ function createMainWindow() {
     },
     title: 'Eye Break Timer',
     icon: path.join(__dirname, 'icon.png'),
-    resizable: false,
+    resizable: true,
+    minWidth: 380,
+    minHeight: 480,
+    maxWidth: 760,
+    maxHeight: 960,
     transparent: false,
     backgroundColor: '#0a1a2a', // Match app's theme color
     autoHideMenuBar: true,
     center: true,
     show: false // Start hidden to prevent white flash
   });
+
+  // Set aspect ratio to maintain uniform scaling
+  mainWindow.setAspectRatio(380/480);
 
   mainWindow.loadFile('index.html');
   
@@ -145,10 +152,6 @@ function showCountdown() {
         }
       }
     });
-    
-    if (!registered) {
-      console.log('Global ESC shortcut registration failed for countdown window');
-    }
     
     // Also add local ESC key handling
     countdownWindow.webContents.on('before-input-event', (event, input) => {
