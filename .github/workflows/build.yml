@@ -21,7 +21,14 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
         
-      - name: Debug - Show directory structure
+      - name: Debug - Show directory structure (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          dir
+          echo "Current directory: $pwd"
+        
+      - name: Debug - Show directory structure (macOS)
+        if: matrix.os == 'macos-latest'
         run: |
           ls -la
           pwd
@@ -35,7 +42,13 @@ jobs:
         run: |
           npm ci
           
-      - name: Debug - Show package.json
+      - name: Debug - Show package.json (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          type package.json
+          
+      - name: Debug - Show package.json (macOS)
+        if: matrix.os == 'macos-latest'  
         run: |
           cat package.json
           
@@ -56,10 +69,19 @@ jobs:
         run: |
           npm run dist:mac
           
-      - name: List build output files
+      - name: List build output files (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
           echo "Looking for build outputs..."
-          ls -la || echo "Root directory listing failed"
+          dir
+          dir out || echo "out/ directory not found"
+          dir dist || echo "dist/ directory not found"
+          
+      - name: List build output files (macOS)
+        if: matrix.os == 'macos-latest'  
+        run: |
+          echo "Looking for build outputs..."
+          ls -la
           ls -la out/ || echo "out/ directory not found"
           ls -la dist/ || echo "dist/ directory not found"
           find . -name "*.exe" -o -name "*.dmg" -o -name "*.zip" || echo "No build artifacts found"
