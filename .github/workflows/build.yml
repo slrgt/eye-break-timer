@@ -21,6 +21,11 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
         
+      - name: Debug - Show directory structure
+        run: |
+          ls -la
+          pwd
+        
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,48 +35,64 @@ jobs:
         run: |
           npm ci
           
+      - name: Debug - Show package.json
+        run: |
+          cat package.json
+          
+      # Instead of 'build', use 'pack' which is defined in your package.json
       - name: Build Electron app
         run: |
-          npm run build
+          npm run pack
           
-      # For Windows
+      # For Windows, use dist:win instead of make
       - name: Package Windows app
         if: matrix.os == 'windows-latest'
         run: |
-          npm run make
+          npm run dist:win
           
-      # For macOS
+      # For macOS, use dist:mac instead of make
       - name: Package macOS app
         if: matrix.os == 'macos-latest'
         run: |
-          npm run make
+          npm run dist:mac
           
       - name: List build output files
         run: |
-          ls -R out/ || echo "out/ directory not found"
-          ls -R dist/ || echo "dist/ directory not found"
+          echo "Looking for build outputs..."
+          ls -la || echo "Root directory listing failed"
+          ls -la out/ || echo "out/ directory not found"
+          ls -la dist/ || echo "dist/ directory not found"
+          find . -name "*.exe" -o -name "*.dmg" -o -name "*.zip" || echo "No build artifacts found"
         
-      - name: Upload artifacts
+      - name: Upload artifacts (Windows)
+        if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: eye-break-timer-${{ matrix.os }}
+          name: eye-break-timer-windows
           path: |
-            out/make/**/*.exe
-            out/make/**/*.dmg
-            out/make/**/*.zip
-            dist/**/*.exe
-            dist/**/*.dmg
-            dist/**/*.zip
+            dist/*.exe
+            out/**/*.exe
+            
+      - name: Upload artifacts (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: eye-break-timer-mac
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            out/**/*.dmg
+            out/**/*.zip
             
       - name: Create Release
         uses: ncipollo/release-action@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           artifacts: |
-            out/make/**/*.exe
-            out/make/**/*.dmg
-            out/make/**/*.zip
-            dist/**/*.exe
-            dist/**/*.dmg
-            dist/**/*.zip
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
+            out/**/*.exe
+            out/**/*.dmg
+            out/**/*.zip
           token: ${{ secrets.GITHUB_TOKEN }} 
