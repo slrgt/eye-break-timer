@@ -25,10 +25,10 @@ function createMainWindow() {
     title: 'Eye Break Timer',
     icon: path.join(__dirname, 'icon.png'),
     resizable: true,
-    minWidth: 380,
-    minHeight: 480,
-    maxWidth: 760,
-    maxHeight: 960,
+    minWidth: 190,  // Half of original width
+    minHeight: 240, // Half of original height
+    maxWidth: 760,  // Double original width
+    maxHeight: 960, // Double original height
     transparent: false,
     backgroundColor: '#0a1a2a', // Match app's theme color
     autoHideMenuBar: true,
